@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>По реке</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="lobby">
+    <h1>По реке</h1>
+    <p class="subtitle">Многопользовательская игра</p>
+
+    <div class="card" id="create-section">
+      <h2>Создать игру</h2>
+      <label>Ваше имя
+        <input type="text" id="create-name" maxlength="20" placeholder="Введите имя">
+      </label>
+      <label>Режим
+        <select id="create-mode">
+          <option value="open">Открытый (всё поле видно)</option>
+          <option value="closed" disabled>Закрытый (карта открывается постепенно)</option>
+        </select>
+      </label>
+      <button id="create-btn" class="btn-primary">Создать игру</button>
+    </div>
+
+    <div class="card" id="join-section" style="display:none">
+      <h2>Подключиться к игре</h2>
+      <p id="room-label">Комната: <strong id="room-id-display"></strong></p>
+      <label>Ваше имя
+        <input type="text" id="join-name" maxlength="20" placeholder="Введите имя">
+      </label>
+      <button id="join-btn" class="btn-primary">Войти</button>
+      <button id="new-game-btn" class="btn-secondary">Создать другую игру</button>
+    </div>
+
+    <div id="lobby-error" class="error-msg" style="display:none"></div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="js/lobby.js"></script>
+</body>
+</html>

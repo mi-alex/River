@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>По реке — игра</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="game-page">
+  <div id="game-layout">
+
+    <!-- Left panel: resources + equipment -->
+    <div id="panel-left">
+      <div id="player-info">
+        <div id="my-name"></div>
+        <div id="round-display">Круг 1</div>
+      </div>
+
+      <div id="resources">
+        <div class="resource-row">
+          <span class="res-label">⚡ Силы</span>
+          <div class="res-bar-wrap"><div class="res-bar" id="bar-forces"></div></div>
+          <span class="res-value" id="val-forces">12/12</span>
+        </div>
+        <div class="resource-row">
+          <span class="res-label">🍞 Еда</span>
+          <div class="res-bar-wrap"><div class="res-bar" id="bar-food"></div></div>
+          <span class="res-value" id="val-food">0/12</span>
+        </div>
+        <div class="resource-row">
+          <span class="res-label">🎓 Навыки</span>
+          <div class="res-bar-wrap"><div class="res-bar" id="bar-skills"></div></div>
+          <span class="res-value" id="val-skills">0/12</span>
+        </div>
+        <div class="resource-row">
+          <span class="res-label">💰 Монеты</span>
+          <div class="res-bar-wrap"><div class="res-bar" id="bar-money"></div></div>
+          <span class="res-value" id="val-money">25/25</span>
+        </div>
+      </div>
+
+      <div id="equipment">
+        <div class="equip-title">Снаряжение</div>
+        <div id="equip-icons">
+          <div class="equip-item" id="eq-paddle" title="Дополнительное весло">🚣</div>
+          <div class="equip-item" id="eq-basket" title="Корзинка для грибов">🧺</div>
+          <div class="equip-item" id="eq-rod" title="Удочка">🎣</div>
+          <div class="equip-item" id="eq-vest" title="Спасательный жилет">🦺</div>
+          <div class="equip-item" id="eq-tent" title="Палатка на лодку">⛺</div>
+          <div class="equip-item" id="eq-gps" title="GPS-навигатор">🗺️</div>
+        </div>
+      </div>
+
+      <div id="players-list">
+        <div class="equip-title">Игроки</div>
+        <div id="players-ul"></div>
+      </div>
+    </div>
+
+    <!-- Center: board canvas -->
+    <div id="panel-center">
+      <canvas id="board-canvas"></canvas>
+      <div id="board-tooltip" style="display:none"></div>
+    </div>
+
+    <!-- Right panel: dice + actions -->
+    <div id="panel-right">
+      <div id="dice-area">
+        <div class="dice-label">Красный кубик</div>
+        <div class="dice" id="die-red">?</div>
+        <div class="dice-label">Синий кубик</div>
+        <div class="dice" id="die-blue">?</div>
+      </div>
+
+      <div id="action-area">
+        <div id="turn-status"></div>
+        <div id="action-buttons"></div>
+      </div>
+
+      <div id="log-area">
+        <div class="equip-title">Журнал</div>
+        <div id="log-entries"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pre-game purchase modal -->
+  <div id="purchase-modal" style="display:none">
+    <div class="modal-box">
+      <h2>Снаряжение перед походом</h2>
+      <p>У вас <strong id="pm-money">25</strong> монет. Потратьте их до начала игры.</p>
+
+      <div class="purchase-section">
+        <h3>Расходники</h3>
+        <div class="purchase-row">
+          <label>Еда (1 монета/ед.): <input type="number" id="pm-food" min="0" max="12" value="0"></label>
+        </div>
+        <div class="purchase-row">
+          <label>Навыки (5 монет/ед.): <input type="number" id="pm-skills" min="0" max="12" value="0"></label>
+        </div>
+      </div>
+
+      <div class="purchase-section">
+        <h3>Снаряжение</h3>
+        <div id="pm-equipment">
+          <label class="eq-check"><input type="checkbox" data-item="paddle"> Весло (+1 ход) — 3 монеты</label>
+          <label class="eq-check"><input type="checkbox" data-item="basket"> Корзинка для грибов — 2 монеты</label>
+          <label class="eq-check"><input type="checkbox" data-item="rod"> Удочка — 2 монеты</label>
+          <label class="eq-check"><input type="checkbox" data-item="vest"> Спасательный жилет — 3 монеты</label>
+          <label class="eq-check"><input type="checkbox" data-item="tent"> Палатка на лодку — 4 монеты</label>
+          <label class="eq-check"><input type="checkbox" data-item="gps"> GPS-навигатор — 4 монеты</label>
+        </div>
+      </div>
+
+      <div id="pm-cost">Стоимость: 0 монет | Остаток: 25</div>
+      <div id="pm-error" class="error-msg" style="display:none"></div>
+      <div class="modal-buttons">
+        <button class="btn-primary" id="pm-ready">Готов к игре ✓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step input popup -->
+  <div id="move-popup" style="display:none">
+    <div class="popup-box">
+      <div id="mp-label">Сколько шагов?</div>
+      <input type="number" id="mp-steps" min="1" value="1">
+      <div class="popup-buttons">
+        <button class="btn-secondary" id="mp-cancel">Отмена</button>
+        <button class="btn-primary" id="mp-ok">Идти</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="js/board.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>
