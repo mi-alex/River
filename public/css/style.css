@@ -110,8 +110,8 @@ body.game-page {
 }
 
 #panel-left {
-  width: 220px;
-  min-width: 220px;
+  width: 260px;
+  min-width: 260px;
   background: var(--surface);
   border-right: 1px solid var(--border);
   display: flex;
@@ -160,7 +160,7 @@ body.game-page {
   gap: 0.4rem;
 }
 
-.res-label { font-size: 0.75rem; width: 60px; flex-shrink: 0; }
+.res-label { font-size: 0.75rem; width: 80px; flex-shrink: 0; white-space: nowrap; }
 .res-bar-wrap { flex: 1; height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
 .res-bar { height: 100%; background: var(--accent); border-radius: 4px; transition: width 0.3s; }
 .res-value { font-size: 0.7rem; color: var(--text-dim); width: 36px; text-align: right; }
