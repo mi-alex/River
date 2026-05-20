@@ -64,6 +64,8 @@ function initTurn(player) {
     blueDieValue: null,
     isRestDay: false,
     fed: false,
+    fishAttempted: false,
+    forageAttempted: false,
     nightStarted: false,
   };
 }
@@ -326,12 +328,14 @@ function processAction(room, playerId, action) {
     case 'night_fish': {
       if (turn.phase !== 'night') return { error: 'Сейчас не ночной отдых' };
       if (turn.fed) return { error: 'Вы уже поели' };
+      if (turn.fishAttempted) return { error: 'Вы уже пробовали рыбачить в этот ход' };
       if (!player.equipment.rod) return { error: 'Нет удочки' };
       const field = map[player.position];
       if (!field.is_fish) return { error: 'На этой клетке нет рыбалки' };
       const die = rollDie();
       turn.blueDieValue = die;
       const caught = die >= 4;
+      turn.fishAttempted = true;
       if (caught) turn.fed = true;
       events.push({ type: 'die_blue', value: die });
       events.push({ type: 'fish_attempt', success: caught });
@@ -341,12 +345,14 @@ function processAction(room, playerId, action) {
     case 'night_forage': {
       if (turn.phase !== 'night') return { error: 'Сейчас не ночной отдых' };
       if (turn.fed) return { error: 'Вы уже поели' };
+      if (turn.forageAttempted) return { error: 'Вы уже пробовали собирать грибы в этот ход' };
       if (!player.equipment.basket) return { error: 'Нет корзинки' };
       const field = map[player.position];
       if (!field.is_mushroom) return { error: 'На этой клетке нет грибов' };
       const die = rollDie();
       turn.blueDieValue = die;
       const found = die >= 4;
+      turn.forageAttempted = true;
       if (found) turn.fed = true;
       events.push({ type: 'die_blue', value: die });
       events.push({ type: 'forage_attempt', success: found });

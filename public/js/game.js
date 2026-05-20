@@ -219,10 +219,10 @@ function renderPlayingPhase(state, me, currentPlayer, isMyTurn) {
         if (me.resources.food > 0) {
           buttons.push({ label: `Поесть из запасов (${me.resources.food})`, primary: false, action: () => send('night_eat_stock') });
         }
-        if (me.equipment.rod && field?.is_fish) {
+        if (me.equipment.rod && field?.is_fish && !turn.fishAttempted) {
           buttons.push({ label: 'Порыбачить 🎣', primary: false, action: () => send('night_fish') });
         }
-        if (me.equipment.basket && field?.is_mushroom) {
+        if (me.equipment.basket && field?.is_mushroom && !turn.forageAttempted) {
           buttons.push({ label: 'Собрать грибы 🍄', primary: false, action: () => send('night_forage') });
         }
       }
