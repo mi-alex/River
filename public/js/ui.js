@@ -10,7 +10,7 @@ function updateResourceBars(player) {
   set('forces', player.resources.forces, 12);
   set('food', player.resources.food, 12);
   set('skills', player.resources.skills, 12);
-  set('money', player.resources.money, 25);
+  set('money', player.resources.money, player.moneyMax || 25);
 }
 
 function updateEquipment(equipment) {
@@ -91,9 +91,14 @@ function showTooltip(field, clientX, clientY) {
 }
 
 // Purchase modal helpers
-function initPurchaseModal(myMoney, onApply, onReady) {
+function initPurchaseModal(myMoney, onApply, onReady, mode = 'open') {
   const modal = document.getElementById('purchase-modal');
   modal.style.display = 'flex';
+
+  // GPS is useless in open mode — hide it
+  const gpsRow = document.querySelector('#pm-equipment .eq-check[data-for="gps"]') ||
+    [...document.querySelectorAll('#pm-equipment .eq-check')].find(el => el.querySelector('[data-item="gps"]'));
+  if (gpsRow) gpsRow.style.display = mode === 'open' ? 'none' : '';
 
   const moneyEl = document.getElementById('pm-money');
   const costEl = document.getElementById('pm-cost');

@@ -23,7 +23,7 @@ class GameRoom {
     if (this.players.find(p => p.name === name)) return { error: 'Имя занято' };
 
     const colorIndex = this.players.length;
-    const player = createPlayer(socketId, name, colorIndex);
+    const player = createPlayer(socketId, name, colorIndex, this.mode);
     this.players.push(player);
 
     if (this.players.length === 1) {

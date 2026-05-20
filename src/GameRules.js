@@ -20,14 +20,16 @@ function portrageCost(difficulty) {
   return 4;
 }
 
-function createPlayer(id, name, colorIndex) {
+function createPlayer(id, name, colorIndex, mode = 'open') {
+  const initMoney = mode === 'closed' ? 30 : 25;
   return {
     id,
     name,
     color: PLAYER_COLORS[colorIndex % PLAYER_COLORS.length],
     position: 0,
     beforeObstacle: false,
-    resources: { forces: C.INIT_FORCES, food: C.INIT_FOOD, skills: C.INIT_SKILLS, money: C.INIT_MONEY },
+    resources: { forces: C.INIT_FORCES, food: C.INIT_FOOD, skills: C.INIT_SKILLS, money: initMoney },
+    moneyMax: initMoney,
     equipment: { paddle: false, basket: false, rod: false, vest: false, tent: false, gps: false },
     ready: false,
     connected: true,

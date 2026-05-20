@@ -119,7 +119,8 @@ function renderPreGame(state, me) {
         socket.emit('mark_ready');
         purchaseDone = true;
         purchaseModalOpen = false;
-      }
+      },
+      state.mode
     );
   }
 
