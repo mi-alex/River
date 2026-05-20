@@ -220,7 +220,7 @@ function renderPlayingPhase(state, me, currentPlayer, isMyTurn) {
       const fed = turn.fed;
       if (!fed) {
         if (me.resources.food > 0) {
-          buttons.push({ label: `Поесть из запасов (${me.resources.food})`, primary: false, action: () => send('night_eat_stock') });
+          buttons.push({ label: `Поесть из запасов 🍲`, primary: false, action: () => send('night_eat_stock') });
         }
         if (me.equipment.rod && field?.is_fish && !turn.fishAttempted) {
           buttons.push({ label: 'Порыбачить 🎣', primary: false, action: () => send('night_fish') });
@@ -231,7 +231,7 @@ function renderPlayingPhase(state, me, currentPlayer, isMyTurn) {
       }
       if (field?.is_shop && me.resources.money > 0) {
         buttons.push({
-          label: `Купить еду в магазине (${me.resources.money} монет)`,
+          label: `Сходить в магазин 🪙`,
           primary: false,
           action: () => {
             const max = Math.min(me.resources.money, 12 - me.resources.food);
@@ -240,7 +240,7 @@ function renderPlayingPhase(state, me, currentPlayer, isMyTurn) {
           },
         });
       }
-      buttons.push({ label: 'Закончить ночь → следующий игрок', primary: true, action: () => send('end_night') });
+      buttons.push({ label: 'Пойти спать', primary: true, action: () => send('end_night') });
       break;
     }
   }
