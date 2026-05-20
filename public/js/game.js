@@ -180,9 +180,12 @@ function renderPlayingPhase(state, me, currentPlayer, isMyTurn) {
 
       if (maxSteps > 0) {
         buttons.push({
-          label: `Идти вперёд (до ${maxSteps})`,
+          label: 'Идти вперёд',
           primary: true,
-          action: () => askSteps(maxSteps, steps => send('move', { steps })),
+          action: () => {
+            const rapid = distToNearestRapid(me.position);
+            askSteps(maxSteps, rapid, steps => send('move', { steps }));
+          },
         });
       }
       buttons.push({ label: 'Закончить движение', primary: false, action: () => send('end_move') });
@@ -233,7 +236,7 @@ function renderPlayingPhase(state, me, currentPlayer, isMyTurn) {
           action: () => {
             const max = Math.min(me.resources.money, 12 - me.resources.food);
             if (max <= 0) { addLog('Нельзя купить: еда заполнена'); return; }
-            askSteps(max, amount => send('night_buy_food', { amount }));
+            askSteps(max, null, amount => send('night_buy_food', { amount }), `Купить еду (1–${max} ед.)`);
           },
         });
       }
@@ -258,4 +261,13 @@ function renderFinished(state) {
 
 function send(type, extra = {}) {
   socket.emit('action', { type, ...extra });
+}
+
+// Returns steps to the nearest rapid ahead of fromPos, or null if none
+function distToNearestRapid(fromPos) {
+  if (!gameMap) return null;
+  for (let i = fromPos + 1; i < gameMap.length; i++) {
+    if (gameMap[i].rapid_difficulty > 0) return i - fromPos;
+  }
+  return null;
 }

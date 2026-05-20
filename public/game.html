@@ -87,11 +87,11 @@
   <!-- Pre-game purchase modal -->
   <div id="purchase-modal" style="display:none">
     <div class="modal-box">
-      <h2>Снаряжение перед походом</h2>
-      <p>У вас <strong id="pm-money">25</strong> монет. Потратьте их до начала игры.</p>
+      <h2>Покупки перед походом</h2>
+      <p>У вас <strong id="pm-money">25</strong> монет. Снаряжение и навыки можно приобрести только до начала игры. Еду можно докупать в магазинах по ходу игры.</p>
 
       <div class="purchase-section">
-        <h3>Расходники</h3>
+        <h3>Ресурсы</h3>
         <div class="purchase-row">
           <label>Еда (1 монета/ед.): <input type="number" id="pm-food" min="0" max="12" value="0"></label>
         </div>
@@ -103,7 +103,7 @@
       <div class="purchase-section">
         <h3>Снаряжение</h3>
         <div id="pm-equipment">
-          <label class="eq-check"><input type="checkbox" data-item="paddle"> Весло (+1 ход) — 3 монеты</label>
+          <label class="eq-check"><input type="checkbox" data-item="paddle"> Дополнительное весло — 3 монеты</label>
           <label class="eq-check"><input type="checkbox" data-item="basket"> Корзинка для грибов — 2 монеты</label>
           <label class="eq-check"><input type="checkbox" data-item="rod"> Удочка — 2 монеты</label>
           <label class="eq-check"><input type="checkbox" data-item="vest"> Спасательный жилет — 3 монеты</label>
@@ -124,6 +124,7 @@
   <div id="move-popup" style="display:none">
     <div class="popup-box">
       <div id="mp-label">Сколько шагов?</div>
+      <div id="mp-rapid" style="display:none"></div>
       <input type="number" id="mp-steps" min="1" value="1">
       <div class="popup-buttons">
         <button class="btn-secondary" id="mp-cancel">Отмена</button>

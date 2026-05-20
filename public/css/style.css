@@ -286,6 +286,7 @@ body.game-page {
   min-width: 200px;
 }
 #mp-label { font-size: 0.95rem; }
+#mp-rapid { font-size: 0.8rem; color: var(--danger); }
 #mp-steps { width: 80px; text-align: center; font-size: 1.2rem; }
 .popup-buttons { display: flex; gap: 8px; }
 

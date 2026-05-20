@@ -146,18 +146,34 @@ function showPurchaseError(msg) {
 }
 
 // Move step popup
-function askSteps(max, onConfirm) {
+// nearestRapidDist: steps to nearest rapid ahead, or null if none in range
+// title: optional custom label (default shows budget info)
+function askSteps(totalBudget, nearestRapidDist, onConfirm, title = null) {
   const popup = document.getElementById('move-popup');
   const input = document.getElementById('mp-steps');
   const label = document.getElementById('mp-label');
-  label.textContent = `Шагов (1–${max}):`;
-  input.max = max;
-  input.value = max;
+  const rapidEl = document.getElementById('mp-rapid');
+
+  const effectiveMax = (nearestRapidDist !== null && nearestRapidDist < totalBudget)
+    ? nearestRapidDist
+    : totalBudget;
+
+  label.textContent = title || `Запас хода: ${totalBudget}`;
+
+  if (!title && nearestRapidDist !== null && nearestRapidDist < totalBudget) {
+    rapidEl.textContent = `До ближайшего порога: ${nearestRapidDist}`;
+    rapidEl.style.display = 'block';
+  } else {
+    rapidEl.style.display = 'none';
+  }
+
+  input.max = effectiveMax;
+  input.value = effectiveMax;
   popup.style.display = 'flex';
 
   const doConfirm = () => {
     const v = parseInt(input.value);
-    if (v >= 1 && v <= max) {
+    if (v >= 1 && v <= effectiveMax) {
       popup.style.display = 'none';
       onConfirm(v);
     }
