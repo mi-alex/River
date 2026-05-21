@@ -54,6 +54,9 @@ npm run dev
 
 ```
 ├── server.js           — сервер (Express + Socket.io)
+├── package.json        — зависимости и скрипты запуска
+├── RULES.md            — правила игры
+├── CONTEXT.md          — концепция и контекст проекта
 ├── src/
 │   ├── GameRoom.js     — комнаты и жизненный цикл игры
 │   ├── GameRules.js    — игровая механика (чистые функции)
