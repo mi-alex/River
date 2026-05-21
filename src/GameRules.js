@@ -208,7 +208,7 @@ function processAction(room, playerId, action) {
         }
         turn.movesLeft = 0;
         turn.paddleAvailable = false;
-        turn.phase = 'night';
+        turn.phase = 'player_finished'; // skip night
         break;
       }
 
@@ -376,6 +376,12 @@ function processAction(room, playerId, action) {
       break;
     }
 
+    case 'end_turn': {
+      if (turn.phase !== 'player_finished') return { error: 'Нельзя закончить ход сейчас' };
+      turn.phase = 'done';
+      break;
+    }
+
     case 'end_night': {
       if (turn.phase !== 'night') return { error: 'Сейчас не ночной отдых' };
       const recovery = computeNightRecovery(player, map, room.players, turn);
@@ -393,12 +399,20 @@ function processAction(room, playerId, action) {
 }
 
 function computeResults(players) {
-  const finishers = players.filter(p => p.finished);
-  const sorted = [...finishers].sort((a, b) => {
+  const sorted = [...players].sort((a, b) => {
+    if (b.position !== a.position) return b.position - a.position;
     if (b.resources.skills !== a.resources.skills) return b.resources.skills - a.resources.skills;
     return b.resources.money - a.resources.money;
   });
-  return sorted.map((p, i) => ({ playerId: p.id, name: p.name, place: i + 1, skills: p.resources.skills, money: p.resources.money }));
+  return sorted.map((p, i) => ({
+    playerId: p.id,
+    name: p.name,
+    place: i + 1,
+    position: p.position,
+    finished: p.finished,
+    skills: p.resources.skills,
+    money: p.resources.money,
+  }));
 }
 
 module.exports = { createPlayer, applyPurchases, initTurn, processAction, computeResults, PLAYER_COLORS, C };

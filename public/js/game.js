@@ -136,6 +136,7 @@ function renderPlayingPhase(state, me, currentPlayer, isMyTurn) {
   if (!isMyTurn) {
     setTurnStatus(`Ход: ${currentPlayer.name}`);
     setActionButtons([]);
+    document.getElementById('finish-popup').style.display = 'none';
     return;
   }
 
@@ -184,12 +185,38 @@ function renderPlayingPhase(state, me, currentPlayer, isMyTurn) {
           label: 'Идти вперёд',
           primary: true,
           action: () => {
-            const rapid = distToNearestRapid(me.position);
-            askSteps(maxSteps, rapid, steps => send('move', { steps }));
+            const finishDist = gameMap.length - 1 - me.position;
+            const rawRapid = distToNearestRapid(me.position);
+            // Rapid only matters if it comes before the finish
+            const rapidDist = rawRapid !== null && rawRapid < finishDist ? rawRapid : null;
+
+            let stopDist = null;
+            let stopLabel = null;
+            if (rapidDist !== null && rapidDist < maxSteps) {
+              stopDist = rapidDist;
+              stopLabel = `До ближайшего порога: ${rapidDist}`;
+            } else if (finishDist <= maxSteps) {
+              stopDist = finishDist;
+              stopLabel = `До финиша: ${finishDist}`;
+            }
+
+            askSteps(maxSteps, stopDist, stopLabel, steps => send('move', { steps }));
           },
         });
       }
       buttons.push({ label: 'Закончить движение', primary: false, action: () => send('end_move') });
+      break;
+    }
+
+    case 'player_finished': {
+      setTurnStatus('🏁 Вы достигли финиша!');
+      const fp = document.getElementById('finish-popup');
+      fp.style.display = 'flex';
+      document.getElementById('fp-ok').onclick = () => {
+        fp.style.display = 'none';
+        send('end_turn');
+      };
+      setActionButtons([]);
       break;
     }
 
@@ -237,7 +264,7 @@ function renderPlayingPhase(state, me, currentPlayer, isMyTurn) {
           action: () => {
             const max = Math.min(me.resources.money, 12 - me.resources.food);
             if (max <= 0) { addLog('Нельзя купить: еда заполнена'); return; }
-            askSteps(max, null, amount => send('night_buy_food', { amount }), `Купить еду (1–${max} ед.)`);
+            askSteps(max, null, null, amount => send('night_buy_food', { amount }), `Купить еду (1–${max} ед.)`);
           },
         });
       }
@@ -250,9 +277,13 @@ function renderPlayingPhase(state, me, currentPlayer, isMyTurn) {
 }
 
 function renderFinished(state) {
+  document.getElementById('finish-popup').style.display = 'none';
   setTurnStatus('Игра завершена!');
   const results = state.results || [];
-  const lines = results.map((r, i) => `${i + 1}. ${r.name} — навыки: ${r.skills}, монеты: ${r.money}`);
+  const lines = results.map((r, i) => {
+    const pos = r.finished ? '🏁 финиш' : `поле ${r.position + 1}`;
+    return `${i + 1}. ${r.name} — ${pos}, навыки: ${r.skills}, монеты: ${r.money}`;
+  });
   setActionButtons([]);
   document.getElementById('action-area').innerHTML = `
     <div style="font-size:1rem;color:var(--accent);margin-bottom:0.5rem">Итоги</div>

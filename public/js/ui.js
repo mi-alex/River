@@ -151,22 +151,21 @@ function showPurchaseError(msg) {
 }
 
 // Move step popup
-// nearestRapidDist: steps to nearest rapid ahead, or null if none in range
-// title: optional custom label (default shows budget info)
-function askSteps(totalBudget, nearestRapidDist, onConfirm, title = null) {
+// stopDist: forced stop distance (rapid or finish), or null
+// stopLabel: text to show below budget line, or null
+// title: optional override for the top line
+function askSteps(totalBudget, stopDist, stopLabel, onConfirm, title = null) {
   const popup = document.getElementById('move-popup');
   const input = document.getElementById('mp-steps');
   const label = document.getElementById('mp-label');
   const rapidEl = document.getElementById('mp-rapid');
 
-  const effectiveMax = (nearestRapidDist !== null && nearestRapidDist < totalBudget)
-    ? nearestRapidDist
-    : totalBudget;
+  const effectiveMax = stopDist !== null ? stopDist : totalBudget;
 
   label.textContent = title || `Запас хода: ${totalBudget}`;
 
-  if (!title && nearestRapidDist !== null && nearestRapidDist < totalBudget) {
-    rapidEl.textContent = `До ближайшего порога: ${nearestRapidDist}`;
+  if (stopLabel && !title) {
+    rapidEl.textContent = stopLabel;
     rapidEl.style.display = 'block';
   } else {
     rapidEl.style.display = 'none';

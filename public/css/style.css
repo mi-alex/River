@@ -244,12 +244,17 @@ body.game-page {
 .log-entry { padding: 2px 0; border-bottom: 1px solid var(--border); }
 
 /* ============ MODALS ============ */
-#purchase-modal, #move-popup {
+#purchase-modal, #move-popup, #finish-popup {
   position: fixed; inset: 0;
   background: rgba(0,0,0,0.7);
   display: flex; align-items: center; justify-content: center;
   z-index: 100;
 }
+
+.finish-popup-box { text-align: center; gap: 0.6rem; padding: 2rem; }
+.finish-icon { font-size: 3rem; line-height: 1; }
+.finish-title { font-size: 1.2rem; font-weight: bold; color: var(--accent); }
+.finish-sub { font-size: 0.9rem; color: var(--text-dim); }
 
 .modal-box {
   background: var(--surface);
