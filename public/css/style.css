@@ -45,6 +45,12 @@ body {
   margin-top: -1rem;
 }
 
+.form-hint {
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  margin: 0 0 1rem;
+}
+
 .card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -228,7 +234,7 @@ body.game-page {
   min-height: 2em;
 }
 
-#action-buttons { display: flex; flex-direction: column; gap: 6px; }
+#action-buttons { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
 #action-buttons button {
   width: 100%;
   padding: 0.5rem;
