@@ -290,6 +290,110 @@ body.game-page {
 #mp-steps { width: 80px; text-align: center; font-size: 1.2rem; }
 .popup-buttons { display: flex; gap: 8px; }
 
+/* ============ RULES BUTTON ============ */
+.btn-rules {
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-size: 0.75rem;
+  cursor: pointer;
+  padding: 2px 0;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.btn-rules:hover { color: var(--accent); }
+
+.modal-title-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+/* ============ RULES MODAL ============ */
+#rules-modal {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.75);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 200;
+}
+
+.rules-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  width: 560px;
+  max-width: 95vw;
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.rules-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.rules-header h2 { color: var(--accent); font-size: 1.1rem; }
+
+.rules-close {
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+.rules-close:hover { background: var(--surface2); color: var(--text); }
+
+.rules-content {
+  padding: 1rem 1.25rem;
+  overflow-y: auto;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.rules-content h3 {
+  color: var(--accent);
+  font-size: 0.95rem;
+  margin-top: 0.5rem;
+}
+
+.rules-content p { color: var(--text); }
+
+.rules-content ul, .rules-content ol {
+  padding-left: 1.4rem;
+  color: var(--text);
+}
+.rules-content li { margin: 2px 0; }
+.rules-content ul ul { margin-top: 4px; }
+
+.rules-content table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.82rem;
+}
+.rules-content th {
+  background: var(--surface2);
+  color: var(--accent);
+  padding: 4px 8px;
+  text-align: left;
+  border: 1px solid var(--border);
+}
+.rules-content td {
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+.rules-content tr:nth-child(even) td { background: rgba(255,255,255,0.03); }
+
 /* ============ TOOLTIP ============ */
 #board-tooltip {
   position: fixed;
