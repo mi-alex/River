@@ -90,7 +90,7 @@ class GameRoom {
   _advanceTurn() {
     const nextIndex = (this.currentPlayerIndex + 1) % this.players.length;
 
-    if (this.finishTriggered && nextIndex === this.finishTriggerPlayerIndex) {
+    if (this.finishTriggered && nextIndex <= this.finishTriggerPlayerIndex) {
       this.phase = 'finished';
       this.results = computeResults(this.players);
       this.turn = null;
